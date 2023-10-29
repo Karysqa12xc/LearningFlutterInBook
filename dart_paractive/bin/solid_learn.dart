@@ -1,13 +1,22 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-class Rectangle {
-  double width;
-  double height;
-  Rectangle(
-    this.width,
-    this.height,
-  );
+abstract class Worker {
+  void work();
+  
 }
-//! Logic Error Square can't extends Rectangle
-class Square extends Rectangle {
-  Square(double length) : super(length, length);
+abstract class Sleeper {
+  void sleep();
+}
+
+class Human implements Worker, Sleeper {
+  @override
+  void sleep() => print("I need 10 hours per night");
+
+  @override
+  void work() => print("I do sa lot of work");
+}
+
+class Robot implements Worker {
+  @override
+  void work() {
+    print("I always work");
+  }
 }
