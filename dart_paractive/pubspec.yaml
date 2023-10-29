@@ -10,6 +10,7 @@ environment:
 dependencies:
   # path: ^1.8.0
   equatable: ^2.0.5
+  patterns_canvas: ^0.4.0
 
 dev_dependencies:
   lints: ^2.0.0
