@@ -1,22 +1,34 @@
-abstract class Worker {
-  void work();
-  
-}
-abstract class Sleeper {
-  void sleep();
+// Use this as interface
+abstract class EncryptionAlgorithm {
+  String encrypt(); // <-- abstraction
 }
 
-class Human implements Worker, Sleeper {
+class AlgoAES implements EncryptionAlgorithm {
   @override
-  void sleep() => print("I need 10 hours per night");
-
-  @override
-  void work() => print("I do sa lot of work");
+  String encrypt() {
+    // TODO: implement encrypt
+    throw UnimplementedError();
+  }
 }
 
-class Robot implements Worker {
+class AlgoRSA implements EncryptionAlgorithm {
   @override
-  void work() {
-    print("I always work");
+  String encrypt() {
+    // TODO: implement encrypt
+    throw UnimplementedError();
+  }
+}
+
+class AlgoSHA implements EncryptionAlgorithm {
+  @override
+  String encrypt() {
+    // TODO: implement encrypt
+    throw UnimplementedError();
+  }
+}
+
+class FileManager {
+  void secureFile(EncryptionAlgorithm algo) {
+    algo.encrypt();
   }
 }
