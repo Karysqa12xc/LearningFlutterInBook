@@ -1,83 +1,107 @@
-import 'dart:collection';
+import 'dart:math';
+import 'dart:io';
+import 'async_test.dart';
 
-import 'generic_test.dart';
-
-void main(List<String> args) {
-  //* Generic
-  final local1 = LocalCache<int>(1);
-  final local2 = LocalCache<double>(2.5);
-  final a = local1.printValue<String>("1");
-  //* Collections
-  //* List
-  var intList = [2, 5, -8, 0, 1];
-  var stringList = ["a", "Hello"];
-  List<String> list = [];
-  list.add("oops");
-
-  List<int>? list1;
-
-  var list2 = [-2, -1, 0, ...?list1];
-  final list3 = const <int>[1, 3, 6, 7];
-
-  const hasCoffee = true;
-
-  final jobs = [
-    "Welder",
-    "Racer driver",
-    "Journalist",
-    if (hasCoffee) "Developer"
-  ];
-
-  final number = [0, 1, 2, for (var i = 3; i < 100; ++i) i];
-  final growable = [];
-  growable.length = 5;
-  final growableTwo = List<int>.filled(3, 0, growable: true);
-  growableTwo.addAll(list3);
-  growableTwo.forEach((element) {
-    print(element);
+void main(List<String> args) async {
+  //* Future use async
+  // try {
+  //   final result = await processData(31, 2.5);
+  //   print("$result");
+  // } on Exception catch (e) {
+  //   print(e.toString());
+  // }
+  //* Stream async
+  // final stream = randomNumbersStream();
+  // await for (var value in stream) {
+  //   print(value);
+  // }
+  // print("Async stream!");
+  // await for (var c in counterStream()) {
+  //   print(c);
+  // }
+  //* Stream sync
+  // final stream = randomNumberIterable();
+  // for (var value in stream) {
+  //   print(value);
+  // }
+  // print('Sync stream!');
+  final stream = RandomStream().stream;
+  await Future.delayed(const Duration(seconds: 2));
+  final subscription = stream.listen((int random) {
+    print(random);
   });
-  var ex = List<int>.generate(5, (int i) => i * i);
-  //* Set
-  print('-----------------');
-  final keys = {1, 2, 3, 3, 4, 5};
-  keys.forEach((element) {
-    print(element);
-  });
-  Set<int> emptySet = {};
-  final example = <int>{};
-  example.addAll([5, 3, 7]);
-  final set1 = <int>{};
-  // ignore: prefer_collection_literals
-  final set2 = LinkedHashSet<int>();
-  //* Map
-  print('-------------------');
-  final m = <int, String>{0: "A", 1: "B", 2: "C"};
-  final example1 = <int, String>{0: "A", 1: "B"};
-  Map<int, int> m1 = Map<int, int>();
-  // The key '0' is already present, "C" not added
-  example1.putIfAbsent(0, () => "C");
-  // The key '6' is not present, "C" successfully added
-  example1.putIfAbsent(6, () => "C");
-
-  example1[0] = "C";
-  example1[6] = "C";
-  //* LINQ FAKE
-  final listLinq = List<int>.generate(20, (i) => i);
-
-  final List<String> other = listLinq
-      .where((int value) => value % 2 == 0)
-      .map((int value) => value.toString())
-      .toList();
-  final listReduce = <int>[1, 2, 3, 4, 5];
-  final sum = listReduce.reduce((int a, int b) => a + b);
-  print(sum);
-  final listFold = [1, 2, 3, 4, 5];
-  final sum1 = listFold.fold(0, (int a, int b) => a + b);
-  final sum2 = listFold.fold(5, (int a, int b) => a + b);
-  print(sum1);
-  print(sum2);
-  final listString = ['hello', "Dart", "!"];
-  final value1 =
-      listString.fold(1, (int count, String item) => count + item.length);
-  print(value1);
+  await Future.delayed(const Duration(microseconds: 3200));
+  subscription.cancel();
 }
+
+// Future<int> processData(int param1, double param2) {
+//   var value = 0;
+//   for (var i = 0; i < param1; ++i) {
+//     for (var j = 0; j < param1 * param2; ++j) {
+//       value++;
+//       value = value * 2;
+//     }
+//   }
+//   final res = httpGetRequest(value);
+//   return Future<int>.value(res);
+// }
+
+// int httpGetRequest(int value) {
+//   return value;
+// }
+
+Future<int> example() async => 3;
+
+Stream<int> randomNumbersStream() async* {
+  final random = Random();
+  final stream = Stream.periodic(
+      const Duration(seconds: 2), (count) => random.nextInt(10));
+  for (var i = 0; i < 100; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield random.nextInt(50) + 1;
+    yield random.nextInt(50) + 1;
+    yield random.nextInt(50) + 1;
+  }
+}
+
+Iterable<int> randomNumberIterable() sync* {
+  final random = Random();
+
+  for (var i = 0; i < 100; i++) {
+    sleep(Duration(seconds: 1));
+    yield random.nextInt(50) + 1;
+  }
+}
+
+Stream<int> counterStream([int maxCount = 10000]) async* {
+  final delay = const Duration(seconds: 1);
+  var count = 0;
+  while (true) {
+    if (count == maxCount) {
+      break;
+    }
+    await Future.delayed(delay);
+    yield ++count;
+  }
+}
+
+Stream<int> numberGenerator(bool even) async* {
+  if (even) {
+    yield 0;
+    yield* evenNumbersUpToTen();
+    yield 0;
+  } else {
+    yield -1;
+    yield* oddNumbersUpSToTen();
+    yield -1;
+  }
+}
+
+Stream<int> oddNumbersUpSToTen() async* {}
+
+Stream<int> evenNumbersUpToTen() async* {}
+
+
+
+
+
