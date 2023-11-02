@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_practice/widgets/author_widget.dart';
+import 'package:flutter_practice/widgets/widget_demo.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const AuthorWidget());
 }
 
 class MyApp extends StatelessWidget {
