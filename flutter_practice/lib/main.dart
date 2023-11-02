@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/widgets/author_widget.dart';
-import 'package:flutter_practice/widgets/widget_demo.dart';
+import 'package:flutter_practice/widgets/footer_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const AuthorWidget());
+  runApp(const FooterWidget());
 }
 
 class MyApp extends StatelessWidget {
