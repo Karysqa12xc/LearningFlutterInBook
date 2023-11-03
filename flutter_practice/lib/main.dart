@@ -1,9 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_practice/widgets/footer_widget.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:ffi' as FFI;
+
+typedef print_demo_c = FFI.Void Function();
+typedef PrintDemo = void Function();
 void main() {
-  runApp(const FooterWidget());
+  // runApp(const MyApp());
+  final path = "demo_lib.dll";
+  final lib = FFI.DynamicLibrary.open(path);
+  final PrintDemo demo =
+      lib.lookup<FFI.NativeFunction<print_demo_c>>("print_demo").asFunction();
+
+  demo();
+}
+
+void MethodChannels() async {
+  const channel = MethodChannel("person");
+  final name = await channel.invokeListMethod<String>("getPersonName");
+  
+  print(name);
 }
 
 class MyApp extends StatelessWidget {
@@ -25,8 +43,8 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               const Positioned(
-                top: 12,
-                left: 4,
+                  top: 12,
+                  left: 4,
                   child: Text(
                     "Hello",
                     style: TextStyle(
